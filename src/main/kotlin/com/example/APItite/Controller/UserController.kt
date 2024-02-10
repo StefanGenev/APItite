@@ -3,6 +3,7 @@ package com.example.APItite.Controller
 import com.example.APItite.Dto.LoginRequestDto
 import com.example.APItite.Dto.RegisterRequestDto
 import com.example.APItite.Dto.LoginResponseDto
+import com.example.APItite.Dto.RegisterResponseDto
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.User
 import com.example.APItite.Service.HashService
@@ -29,26 +30,31 @@ class UserController(
         }
 
         return LoginResponseDto(
-                token = tokenService.createToken(user),
+                statusCode = 200,
+                authToken = tokenService.createToken(user),
+                user = user
         )
     }
 
     @PostMapping("/register")
-    fun register(@RequestBody payload: RegisterRequestDto): LoginResponseDto {
+    fun register(@RequestBody payload: RegisterRequestDto): RegisterResponseDto {
         if (userService.existsByEmail(payload.email)) {
             throw ApiException(400, "Email already exists")
         }
 
         val user = User(
                 email = payload.email,
+                name = payload.name,
                 password = hashService.hashBcrypt(payload.password),
                 role = payload.role
         )
 
         val savedUser = userService.save(user)
 
-        return LoginResponseDto(
-                token = tokenService.createToken(savedUser),
+        return RegisterResponseDto(
+                statusCode = 200,
+                authToken = tokenService.createToken(savedUser),
+                user = user
         )
     }
 }

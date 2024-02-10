@@ -24,5 +24,8 @@ data class Restaurant(
 
         @Lob
         @Column(nullable = false)
-        var image: ByteArray
+        var image: ByteArray,
+
+        @Column(nullable = false)
+        var rating: Double
 )
