@@ -1,0 +1,18 @@
+package com.example.APItite.Utils
+
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+
+
+object ResponseHandler {
+    fun generateResponse(message: String, status: HttpStatus, responseObj: Any?): ResponseEntity<Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        map["message"] = message
+        map["status"] = status.value()
+
+        if (responseObj != null)
+            map["data"] = responseObj
+
+        return ResponseEntity(map, status)
+    }
+}

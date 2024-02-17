@@ -22,10 +22,8 @@ data class Restaurant(
         @Column(nullable = false)
         var address: String = "",
 
-        //TODO Change to bytearray
-        @Column(nullable = false)
-        var image: String = "",
+        @Lob
+        var image: ByteArray = ByteArray(0),
 
-        @Column(nullable = false)
         var rating: Double = 0.0
 )
