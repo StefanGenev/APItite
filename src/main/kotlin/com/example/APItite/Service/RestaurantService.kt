@@ -1,12 +1,11 @@
 package com.example.APItite.Service
 
 import com.example.APItite.Dto.SaveRestaurantInputModel
+import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Repo.RestaurantRepository
-import com.example.APItite.Utils.ResponseHandler.generateResponse
+import com.example.APItite.Utils.ImageUtils
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
 
@@ -15,7 +14,14 @@ class RestaurantService (
         private val restaurantRepo: RestaurantRepository
 ) {
     fun getAll(): List<Restaurant> {
-        return restaurantRepo.findAll().toList()
+        var restaurants = restaurantRepo.findAll().toList()
+
+        for (restaurant in restaurants) {
+            val decompressedImage = ImageUtils.decompress(restaurant.image)
+            restaurant.image = decompressedImage
+        }
+
+        return restaurants
     }
 
     fun saveRestaurant(user: String?, file: MultipartFile?): Restaurant? {
@@ -31,9 +37,9 @@ class RestaurantService (
         var restaurant = inputModelJson.getRestaurantEntity()
 
         if (file != null) {
-            restaurant.image = file.bytes
+            restaurant.image = ImageUtils.compress(file.bytes)
         } else {
-            return null
+            throw ApiException(400, "No image passed")
         }
 
         return restaurantRepo.save(restaurant)
