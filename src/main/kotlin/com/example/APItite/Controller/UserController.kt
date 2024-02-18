@@ -34,7 +34,6 @@ class UserController(
             }
 
             val result = LoginResponseDto(
-                statusCode = 200,
                 authToken = tokenService.createToken(user),
                 user = user
             )
@@ -61,7 +60,6 @@ class UserController(
 
             val savedUser = userService.save(user)
             val result = RegisterResponseDto(
-                statusCode = 200,
                 authToken = tokenService.createToken(savedUser),
                 user = user
             )
