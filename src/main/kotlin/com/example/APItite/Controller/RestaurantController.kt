@@ -26,11 +26,10 @@ class RestaurantController(
         }
     }
 
-    @PostMapping(value = ["/save"], consumes = [MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun save(@RequestPart("restaurant") restaurant: String?, @RequestPart("file") file: MultipartFile?): ResponseEntity<Any> {
+    @PostMapping("/save")
+    fun save(@RequestBody restaurant: Restaurant): ResponseEntity<Any> {
         try {
-
-            val result = restaurantService.saveRestaurant(restaurant, file)
+            val result = restaurantService.saveRestaurant(restaurant)
             return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {

@@ -15,33 +15,10 @@ class RestaurantService (
 ) {
     fun getAll(): List<Restaurant> {
         var restaurants = restaurantRepo.findAll().toList()
-
-        for (restaurant in restaurants) {
-            val decompressedImage = ImageUtils.decompress(restaurant.image)
-            restaurant.image = decompressedImage
-        }
-
         return restaurants
     }
 
-    fun saveRestaurant(user: String?, file: MultipartFile?): Restaurant? {
-        var inputModelJson: SaveRestaurantInputModel
-
-        try {
-            val objectMapper = ObjectMapper()
-            inputModelJson = objectMapper.readValue(user, SaveRestaurantInputModel::class.java)
-        } catch (e: Exception) {
-            return null
-        }
-
-        var restaurant = inputModelJson.getRestaurantEntity()
-
-        if (file != null) {
-            restaurant.image = ImageUtils.compress(file.bytes)
-        } else {
-            throw ApiException(400, "No image passed")
-        }
-
+    fun saveRestaurant(restaurant: Restaurant): Restaurant {
         return restaurantRepo.save(restaurant)
     }
 
