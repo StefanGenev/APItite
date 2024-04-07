@@ -1,26 +1,31 @@
 package com.example.APItite.Model
 
 import jakarta.persistence.*
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 
 
 @Entity
 @Table(name = "users")
-data class User(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        var id: Long = 0,
-
+open class User(
         @Column(nullable = false)
-        var name: String = "",
+        open var name: String = "",
 
         @Column(nullable = false, unique = true)
-        var email: String = "",
+        open var email: String = "",
 
         @Column(nullable = false)
-        var password: String = "",
+        open var passWord: String = "",
 
-        @Enumerated(EnumType.STRING)
-        var role: Roles = Roles.CUSTOMER
-)
+        @ManyToMany(fetch = FetchType.EAGER)
+        open var roles: Set<UserRole> = HashSet()
+) {
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        open var id: Long = 0
+
+        constructor(user: User) : this(user.name, user.email, user.passWord) {
+                id = user.id
+                name = user.name
+                email = user.email
+                passWord = user.passWord
+                roles = user.roles
+        }
+}

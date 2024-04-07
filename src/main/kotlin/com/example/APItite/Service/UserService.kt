@@ -1,15 +1,85 @@
 package com.example.APItite.Service
 
+import com.example.APItite.Dto.LoginRequestDto
+import com.example.APItite.Dto.LoginResponseDto
+import com.example.APItite.Dto.RegisterRequestDto
+import com.example.APItite.Dto.RegisterResponseDto
+import com.example.APItite.Exceptions.ApiException
+import com.example.APItite.Model.RefreshToken
 import com.example.APItite.Model.User
 import com.example.APItite.Repo.UserRepository
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 
 
 @Service
 class UserService (
-    private val userRepo: UserRepository
-) {
+    private val userRepo: UserRepository,
+    private val hashService: HashService,
+    private val tokenService: TokenService,
+    private val refreshTokenService: RefreshTokenService,
+    private val authenticationManager: AuthenticationManager,
+    ) {
+
+    fun login(payload: LoginRequestDto): LoginResponseDto {
+
+        val authentication: Authentication = authenticationManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                payload.email,
+                payload.password
+            )
+        )
+
+        if (authentication.isAuthenticated()) {
+
+            val user = findByEmail(payload.email) ?: throw ApiException(400, "Login failed")
+
+            val refreshToken: RefreshToken = refreshTokenService.createRefreshToken(payload.email)
+
+            return LoginResponseDto(
+                accessToken = tokenService.generateToken(user.email),
+                token = refreshToken.token,
+                user = user
+            )
+
+        } else {
+            throw UsernameNotFoundException("Invalid user request")
+        }
+    }
+
+    fun register(payload: RegisterRequestDto): RegisterResponseDto {
+
+        if (existsByEmail(payload.email)) {
+            throw ApiException(400, "Email already exists")
+        }
+
+        val encoder = BCryptPasswordEncoder()
+
+        val user = User(
+            email = payload.email,
+            name = payload.name,
+            passWord = encoder.encode(payload.password),
+            roles = payload.roles
+        )
+
+        val savedUser = save(user)
+
+        val refreshToken: RefreshToken = refreshTokenService.createRefreshToken(payload.email)
+
+        val result = RegisterResponseDto(
+            accessToken = tokenService.generateToken(user.email),
+            token = refreshToken.token,
+            user = user
+        )
+
+        return result
+    }
+
     fun findById(id: Long): User? {
         return userRepo.findByIdOrNull(id)
     }
