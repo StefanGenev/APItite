@@ -19,6 +19,8 @@ import java.util.*
 class TokenService(
         @Value("\${security.key}")
         private val jwtKey: String,
+        @Value("\${refresh.token.seconds.before.expiration}")
+        private val refreshTokenSecondsBeforeExpiration: Long
 ) {
     fun extractEmail(token: String): String {
         return extractClaim<String>(token, Claims::getSubject)
@@ -61,7 +63,7 @@ class TokenService(
             .setClaims(claims)
             .setSubject(username)
             .setIssuedAt(Date(System.currentTimeMillis()))
-            .setExpiration(Date(System.currentTimeMillis() + 1000 * 60 * 1))
+            .setExpiration(Date(System.currentTimeMillis() + (1000 * refreshTokenSecondsBeforeExpiration)))
             .signWith(getSignKey(), SignatureAlgorithm.HS256).compact()
     }
 

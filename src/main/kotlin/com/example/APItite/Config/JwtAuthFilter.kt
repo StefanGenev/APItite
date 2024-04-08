@@ -18,8 +18,10 @@ import java.io.IOException
 
 @Component
 class JwtAuthFilter(
+
     private val jwtService: TokenService,
-    private val userDetailsServiceImpl: CustomUserDetailsService,
+    private val userDetailsServiceImpl: CustomUserDetailsService
+
 ) : OncePerRequestFilter() {
 
     @Throws(ServletException::class, IOException::class)
@@ -29,19 +31,26 @@ class JwtAuthFilter(
         filterChain: FilterChain
     ) {
         val authHeader = request.getHeader("Authorization")
+
         var token: String? = null
         var username: String? = null
+
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
             token = authHeader.substring(7)
             username = jwtService.extractEmail(token)
         }
 
         if (username != null && SecurityContextHolder.getContext().authentication == null) {
+
             val userDetails: UserDetails = userDetailsServiceImpl.loadUserByUsername(username)
+
             if (jwtService.validateToken(token!!, userDetails)) {
+
                 val authenticationToken =
                     UsernamePasswordAuthenticationToken(userDetails, null, userDetails.authorities)
                 authenticationToken.details = WebAuthenticationDetailsSource().buildDetails(request)
+
                 SecurityContextHolder.getContext().authentication = authenticationToken
             }
         }

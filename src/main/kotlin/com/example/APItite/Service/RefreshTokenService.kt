@@ -1,11 +1,9 @@
 package com.example.APItite.Service
 
-import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.RefreshToken
 import com.example.APItite.Repo.RefreshTokenRepository
-import com.example.APItite.Repo.RestaurantRepository
 import com.example.APItite.Repo.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import java.time.Instant
@@ -16,8 +14,9 @@ import java.util.*
 class RefreshTokenService(
 
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val userRepository: UserRepository
-
+    private val userRepository: UserRepository,
+    @Value("\${refresh.token.seconds.before.expiration}")
+    private val refreshTokenSecondsBeforeExpiration: Long
 )
 {
 
@@ -26,9 +25,14 @@ class RefreshTokenService(
         val userInfo = userRepository.findByEmail(email)
 
         if (userInfo != null) {
-            val refreshToken = RefreshToken(userInfo = userInfo,
-                                token = UUID.randomUUID().toString(),
-                                expiryDate = Instant.now().plusMillis(600000))
+
+            var refreshToken = refreshTokenRepository.findByUserId(userInfo.id)
+
+            if (refreshToken == null)
+                refreshToken = RefreshToken(user = userInfo)
+
+            refreshToken.token = UUID.randomUUID().toString()
+            refreshToken.expiryDate = Instant.now().plusSeconds(refreshTokenSecondsBeforeExpiration)
 
             return refreshTokenRepository.save(refreshToken)
         } else {

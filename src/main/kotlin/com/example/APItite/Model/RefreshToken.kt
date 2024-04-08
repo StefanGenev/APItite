@@ -15,5 +15,5 @@ data class RefreshToken (
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    var userInfo: User
+    var user: User
 )
