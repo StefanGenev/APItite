@@ -74,6 +74,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/api/login").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/refreshToken").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/checkIfEmailExists").permitAll()
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
         }.authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)

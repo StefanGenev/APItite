@@ -1,9 +1,6 @@
 package com.example.APItite.Service
 
-import com.example.APItite.Dto.LoginRequestDto
-import com.example.APItite.Dto.LoginResponseDto
-import com.example.APItite.Dto.RegisterRequestDto
-import com.example.APItite.Dto.RegisterResponseDto
+import com.example.APItite.Dto.*
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.RefreshToken
 import com.example.APItite.Model.User
@@ -50,6 +47,12 @@ class UserService (
         } else {
             throw UsernameNotFoundException("Invalid user request")
         }
+    }
+
+    fun checkIfEmailExists(payload: CheckIfEmailExistsRequestDto): CheckIfEmailExistsResponseDto {
+        val userExists = existsByEmail(payload.email)
+        return CheckIfEmailExistsResponseDto(exists = userExists)
+
     }
 
     fun register(payload: RegisterRequestDto): RegisterResponseDto {

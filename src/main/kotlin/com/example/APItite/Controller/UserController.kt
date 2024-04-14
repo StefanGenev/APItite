@@ -1,9 +1,6 @@
 package com.example.APItite.Controller
 
-import com.example.APItite.Dto.JwtResponseDto
-import com.example.APItite.Dto.LoginRequestDto
-import com.example.APItite.Dto.RefreshTokenRequestDto
-import com.example.APItite.Dto.RegisterRequestDto
+import com.example.APItite.Dto.*
 import com.example.APItite.Service.RefreshTokenService
 import com.example.APItite.Service.TokenService
 import com.example.APItite.Service.UserService
@@ -29,6 +26,18 @@ class UserController(
 
             val result = userService.login(payload)
             return ResponseHandler.generateResponse("Successful login!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/checkIfEmailExists")
+    fun checkIfEmailExists(@RequestBody payload: CheckIfEmailExistsRequestDto): ResponseEntity<Any> {
+        try {
+
+            val result = userService.checkIfEmailExists(payload)
+            return ResponseHandler.generateResponse("Successful check!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
