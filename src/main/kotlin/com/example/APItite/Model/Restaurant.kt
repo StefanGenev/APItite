@@ -16,6 +16,9 @@ data class Restaurant(
         @Column(nullable = false)
         var name: String = "",
 
+        @ManyToOne(fetch = FetchType.EAGER)
+        var owner: User,
+
         @Enumerated(EnumType.STRING)
         var priceRange: PriceRanges = PriceRanges.CHEAP,
 
