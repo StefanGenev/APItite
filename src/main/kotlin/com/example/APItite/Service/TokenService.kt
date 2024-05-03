@@ -27,7 +27,8 @@ class TokenService(
     }
 
     fun extractExpiration(token: String): Date {
-        return extractClaim<Date>(token, Claims::getExpiration)
+        val expiration = extractClaim<Date>(token, Claims::getExpiration)
+        return expiration
     }
 
     fun <T> extractClaim(token: String, claimsResolver: (Claims) -> T): T {

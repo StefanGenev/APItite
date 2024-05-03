@@ -1,10 +1,10 @@
 package com.example.APItite.Dto
 
-import com.example.APItite.Model.UserRole
+import com.example.APItite.Model.Roles
 
 data class RegisterRequestDto(
         var email: String,
         var name: String,
         var password: String,
-        var roles: Set<UserRole> = HashSet<UserRole>()
+        var role: Roles
 )

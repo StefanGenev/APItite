@@ -15,8 +15,8 @@ open class User(
         @Column(nullable = false)
         open var passWord: String = "",
 
-        @ManyToMany(fetch = FetchType.EAGER)
-        open var roles: Set<UserRole> = HashSet()
+        @Column(nullable = false)
+        open var role: Roles = Roles.CUSTOMER
 ) {
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         open var id: Long = 0
@@ -26,6 +26,6 @@ open class User(
                 name = user.name
                 email = user.email
                 passWord = user.passWord
-                roles = user.roles
+                role = user.role
         }
 }

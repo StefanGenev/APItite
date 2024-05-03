@@ -67,7 +67,7 @@ class UserService (
             email = payload.email,
             name = payload.name,
             passWord = encoder.encode(payload.password),
-            roles = payload.roles
+            role = payload.role
         )
 
         val savedUser = save(user)

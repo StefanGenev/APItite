@@ -13,13 +13,7 @@ open class CustomUserDetails(user: User) : User(user), UserDetails {
     private val log = LoggerFactory.getLogger(CustomUserDetails::class.java)
 
     override fun getAuthorities(): Collection<GrantedAuthority> {
-        return roles
-            .stream()
-            .map { role ->
-                log.debug("Granting Authority to user with role: " + role.toString())
-                SimpleGrantedAuthority(role.toString())
-            }
-            .collect(Collectors.toList())
+        return listOf(SimpleGrantedAuthority(role.toString()))
     }
 
     override fun getPassword(): String {
