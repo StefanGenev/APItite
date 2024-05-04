@@ -1,6 +1,10 @@
 package com.example.APItite.Config
 
 import com.example.APItite.Service.CustomUserDetailsService
+import com.nimbusds.jose.jwk.source.ImmutableSecret
+import com.nimbusds.jose.proc.SecurityContext
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
@@ -15,11 +19,13 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.oauth2.jwt.*
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import javax.crypto.spec.SecretKeySpec
 
 
 /** Permit/Disable routes and requests **/
@@ -29,7 +35,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfiguration(
     private val userDetailsService: CustomUserDetailsService,
     private val jwtAuthFilter: JwtAuthFilter,
+
+    @Value("\${security.key}")
+    private val jwtKey: String,
+
 ) {
+
+    private val secretKey = SecretKeySpec(jwtKey.toByteArray(), "HmacSHA256")
 
     @Bean
     fun userDetailsService(): UserDetailsService {
@@ -67,6 +79,11 @@ class SecurityConfiguration(
     }
 
     @Bean
+    fun jwtDecoder(): JwtDecoder {
+        return NimbusJwtDecoder.withSecretKey(secretKey).build()
+    }
+
+    @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         // Define public and private routes
         http.authorizeHttpRequests { authorizeHttpRequests ->
@@ -77,24 +94,8 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/api/checkIfEmailExists").permitAll()
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
-        }.authenticationProvider(authenticationProvider()).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
-
-        // Configure JWT
-        http.oauth2ResourceServer { oauth2 ->
-            oauth2
-                    .jwt(Customizer.withDefaults())
-        }
-
-    /*
-        http.authenticationManager { auth ->
-            val jwt = auth as BearerTokenAuthenticationToken
-            val userId = tokenService.extractEmail(jwt.token)
-
-            //val user = userService.findByEmail(userId) ?: throw InvalidBearerTokenException("Invalid token")
-            //UsernamePasswordAuthenticationToken(user, "", listOf(SimpleGrantedAuthority("USER")))
-        }
-
-     */
+        }.authenticationProvider(authenticationProvider())
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         // Other configuration
         http.cors { httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()) }

@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service
 @Service
 class UserService (
     private val userRepo: UserRepository,
-    private val hashService: HashService,
     private val tokenService: TokenService,
     private val refreshTokenService: RefreshTokenService,
     private val authenticationManager: AuthenticationManager,

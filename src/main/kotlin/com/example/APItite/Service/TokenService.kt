@@ -42,7 +42,7 @@ class TokenService(
             .setSigningKey(getSignKey())
             .build()
             .parseClaimsJws(token)
-            .getBody()
+            .body
     }
 
     private fun isTokenExpired(token: String): Boolean {
