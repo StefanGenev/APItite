@@ -1,5 +1,7 @@
 package com.example.APItite.Controller
 
+import com.example.APItite.Dto.RegisterRestaurantRequestDto
+import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Service.RestaurantService
 import com.example.APItite.Utils.ResponseHandler
@@ -27,9 +29,22 @@ class RestaurantController(
     }
 
     @PostMapping("/save")
-    fun save(@RequestBody restaurant: Restaurant): ResponseEntity<Any> {
+    fun save(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
         try {
-            val result = restaurantService.saveRestaurant(restaurant)
+
+            val result = restaurantService.saveRestaurant(dto)
+            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/save_location")
+    fun save(@RequestBody dto: SaveRestaurantLocationRequestDto): ResponseEntity<Any> {
+        try {
+
+            val result = restaurantService.saveRestaurantLocation(dto)
             return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
