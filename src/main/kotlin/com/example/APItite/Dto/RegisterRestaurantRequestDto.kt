@@ -16,6 +16,8 @@ data class RegisterRestaurantRequestDto(
 
     var rating: Double = 0.0,
 
+    var foodTypeCode: Long = 0,
+
     var ownerId: Long = 0
 
 )

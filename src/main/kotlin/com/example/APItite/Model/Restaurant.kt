@@ -28,5 +28,8 @@ data class Restaurant(
         @Column(nullable = false)
         var imageUrl: String = "",
 
+        @ManyToOne(fetch = FetchType.EAGER)
+        var foodType: FoodType,
+
         var rating: Double = 0.0
 )

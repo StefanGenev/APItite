@@ -15,10 +15,16 @@ import java.util.*
 class RestaurantService (
         private val restaurantRepo: RestaurantRepository,
         private val userService: UserService,
+        private val foodTypeService: FoodTypeService,
 ) {
     fun getAll(): List<Restaurant> {
         var restaurants = restaurantRepo.findAll().toList()
         return restaurants
+    }
+
+    fun getByOwnerId(id: Long): Restaurant? {
+        var restaurant = restaurantRepo.findByOwnerId(id)
+        return restaurant
     }
 
     fun saveRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
@@ -29,12 +35,19 @@ class RestaurantService (
             throw ApiException(400, "Owner doesn't exist")
         }
 
+        val foodType = foodTypeService.findById(dto.foodTypeCode)
+
+        if (foodType == null) {
+            throw ApiException(400, "Food type doesn't exist")
+        }
+
         val restaurant = Restaurant(0
             , name = dto.name
             , owner = owner
             , priceRange = dto.priceRange
             , address = dto.address
             , imageUrl = dto.imageUrl
+            , foodType = foodType
             , 0.0 )
 
         val savedRestaurant = restaurantRepo.save(restaurant)

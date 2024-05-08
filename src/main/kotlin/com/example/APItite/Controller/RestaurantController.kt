@@ -1,5 +1,6 @@
 package com.example.APItite.Controller
 
+import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.RegisterRestaurantRequestDto
 import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
 import com.example.APItite.Model.Restaurant
@@ -10,6 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import java.util.*
 
 
 @RestController
@@ -21,6 +23,17 @@ class RestaurantController(
     fun getAll(): ResponseEntity<Any> {
         try {
             val result: List<Restaurant> = restaurantService.getAll()
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/get_by_owner_id")
+    fun getByOwnerId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result: Restaurant? = restaurantService.getByOwnerId(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
@@ -41,7 +54,7 @@ class RestaurantController(
     }
 
     @PostMapping("/save_location")
-    fun save(@RequestBody dto: SaveRestaurantLocationRequestDto): ResponseEntity<Any> {
+    fun saveLocation(@RequestBody dto: SaveRestaurantLocationRequestDto): ResponseEntity<Any> {
         try {
 
             val result = restaurantService.saveRestaurantLocation(dto)
