@@ -1,0 +1,26 @@
+package com.example.APItite.Model
+
+import jakarta.persistence.*
+
+@Entity
+@Table(name = "meals")
+data class Meal(
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
+
+    @Column(nullable = false)
+    var name: String = "",
+
+    @Column(nullable = false)
+    var description: String = "",
+
+    @Column(nullable = false)
+    var price: Double = 0.0,
+
+    @Column(nullable = false)
+    var imageUrl: String = "",
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    var restaurant: Restaurant,
+)

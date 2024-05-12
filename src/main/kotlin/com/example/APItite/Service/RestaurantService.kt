@@ -6,8 +6,12 @@ import com.example.APItite.Dto.RegisterRestaurantRequestDto
 import com.example.APItite.Dto.RegisterRestaurantResponseDto
 import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
 import com.example.APItite.Exceptions.ApiException
+import com.example.APItite.Model.Meal
 import com.example.APItite.Model.Restaurant
+import com.example.APItite.Model.User
+import com.example.APItite.Repo.MealRepository
 import com.example.APItite.Repo.RestaurantRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -16,6 +20,7 @@ class RestaurantService (
         private val restaurantRepo: RestaurantRepository,
         private val userService: UserService,
         private val foodTypeService: FoodTypeService,
+        private val mealsRepo: MealRepository,
 ) {
     fun getAll(): List<Restaurant> {
         var restaurants = restaurantRepo.findAll().toList()
@@ -25,6 +30,11 @@ class RestaurantService (
     fun getByOwnerId(id: Long): Restaurant? {
         var restaurant = restaurantRepo.findByOwnerId(id)
         return restaurant
+    }
+
+    fun getMealsByRestaurant(id: Long) : List<Meal> {
+        var meals = mealsRepo.findByRestaurantId(id).toList()
+        return meals
     }
 
     fun saveRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
@@ -69,5 +79,7 @@ class RestaurantService (
         restaurantRepo.save(restaurant)
         return NoData()
     }
-
+    fun findById(id: Long): Restaurant? {
+        return restaurantRepo.findByIdOrNull(id)
+    }
 }

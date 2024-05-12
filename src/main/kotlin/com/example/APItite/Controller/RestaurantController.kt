@@ -2,8 +2,11 @@ package com.example.APItite.Controller
 
 import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.RegisterRestaurantRequestDto
+import com.example.APItite.Dto.SaveMealRequestDto
 import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
+import com.example.APItite.Model.Meal
 import com.example.APItite.Model.Restaurant
+import com.example.APItite.Service.MealService
 import com.example.APItite.Service.RestaurantService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
@@ -18,6 +21,7 @@ import java.util.*
 @RequestMapping("/api/restaurants")
 class RestaurantController(
         private val restaurantService: RestaurantService,
+        private val mealService: MealService,
 ) {
     @GetMapping("/get-all")
     fun getAll(): ResponseEntity<Any> {
