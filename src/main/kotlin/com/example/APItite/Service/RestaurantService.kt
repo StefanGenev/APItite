@@ -1,19 +1,14 @@
 package com.example.APItite.Service
 
 
-import com.example.APItite.Dto.NoData
-import com.example.APItite.Dto.RegisterRestaurantRequestDto
-import com.example.APItite.Dto.RegisterRestaurantResponseDto
-import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
+import com.example.APItite.Dto.*
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Meal
 import com.example.APItite.Model.Restaurant
-import com.example.APItite.Model.User
 import com.example.APItite.Repo.MealRepository
 import com.example.APItite.Repo.RestaurantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.util.*
 
 @Service
 class RestaurantService (
@@ -37,7 +32,7 @@ class RestaurantService (
         return meals
     }
 
-    fun saveRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
+    fun registerRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
 
         val owner = userService.findById(dto.ownerId)
 
@@ -63,6 +58,32 @@ class RestaurantService (
         val savedRestaurant = restaurantRepo.save(restaurant)
 
         return RegisterRestaurantResponseDto(savedRestaurant.id)
+    }
+
+    fun saveRestaurant(dto: SaveRestaurantRequestDto): Restaurant {
+
+        val restaurant = restaurantRepo.findById(dto.id)
+
+        if (restaurant.isEmpty) {
+            throw ApiException(400, "Restaurant doesn't exist")
+        }
+
+        val foodType = foodTypeService.findById(dto.foodTypeCode)
+
+        if (foodType == null) {
+            throw ApiException(400, "Food type doesn't exist")
+        }
+
+        val newRestaurant = restaurant.get()
+        newRestaurant.name = dto.name
+        newRestaurant.priceRange = dto.priceRange
+        newRestaurant.address = dto.address
+        newRestaurant.imageUrl = dto.imageUrl
+        newRestaurant.foodType = foodType
+
+        val savedRestaurant = restaurantRepo.save(newRestaurant)
+
+        return savedRestaurant
     }
 
     fun saveRestaurantLocation(dto: SaveRestaurantLocationRequestDto): NoData {

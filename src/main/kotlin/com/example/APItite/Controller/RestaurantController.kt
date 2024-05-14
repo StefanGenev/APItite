@@ -2,19 +2,15 @@ package com.example.APItite.Controller
 
 import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.RegisterRestaurantRequestDto
-import com.example.APItite.Dto.SaveMealRequestDto
 import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
-import com.example.APItite.Model.Meal
+import com.example.APItite.Dto.SaveRestaurantRequestDto
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Service.MealService
 import com.example.APItite.Service.RestaurantService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 
 @RestController
@@ -45,8 +41,20 @@ class RestaurantController(
         }
     }
 
+    @PostMapping("/register")
+    fun register(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
+        try {
+
+            val result = restaurantService.registerRestaurant(dto)
+            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
     @PostMapping("/save")
-    fun save(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
+    fun saveRequestBody(@RequestBody dto: SaveRestaurantRequestDto): ResponseEntity<Any> {
         try {
 
             val result = restaurantService.saveRestaurant(dto)
