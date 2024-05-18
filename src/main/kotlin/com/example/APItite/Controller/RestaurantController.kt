@@ -1,9 +1,7 @@
 package com.example.APItite.Controller
 
-import com.example.APItite.Dto.IdentifierDto
-import com.example.APItite.Dto.RegisterRestaurantRequestDto
-import com.example.APItite.Dto.SaveRestaurantLocationRequestDto
-import com.example.APItite.Dto.SaveRestaurantRequestDto
+import com.example.APItite.Dto.*
+import com.example.APItite.Model.Promotion
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Service.MealService
 import com.example.APItite.Service.RestaurantService

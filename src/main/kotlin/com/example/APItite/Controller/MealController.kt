@@ -2,6 +2,7 @@ package com.example.APItite.Controller
 
 import com.example.APItite.Dto.*
 import com.example.APItite.Model.Meal
+import com.example.APItite.Model.Promotion
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Service.MealService
 import com.example.APItite.Service.RestaurantService
@@ -35,6 +36,28 @@ class MealController(
     fun saveMeal(@RequestBody dto: SaveMealRequestDto): ResponseEntity<Any> {
         try {
             val result: SaveMealResponseDto = mealService.saveMeal(dto)
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/save_promotion")
+    fun savePromotion(@RequestBody dto: SavePromotionRequestDto): ResponseEntity<Any> {
+        try {
+            val result = mealService.savePromotion(dto)
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/get_promotions")
+    fun getPromotions(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result: List<Promotion> = mealService.getPromotions(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {

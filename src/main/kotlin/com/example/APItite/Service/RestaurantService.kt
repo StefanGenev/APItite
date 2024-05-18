@@ -3,9 +3,10 @@ package com.example.APItite.Service
 
 import com.example.APItite.Dto.*
 import com.example.APItite.Exceptions.ApiException
-import com.example.APItite.Model.Meal
+import com.example.APItite.Model.Promotion
 import com.example.APItite.Model.Restaurant
 import com.example.APItite.Repo.MealRepository
+import com.example.APItite.Repo.PromotionsRepository
 import com.example.APItite.Repo.RestaurantRepository
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -15,7 +16,6 @@ class RestaurantService (
         private val restaurantRepo: RestaurantRepository,
         private val userService: UserService,
         private val foodTypeService: FoodTypeService,
-        private val mealsRepo: MealRepository,
 ) {
     fun getAll(): List<Restaurant> {
         var restaurants = restaurantRepo.findAll().toList()
@@ -25,11 +25,6 @@ class RestaurantService (
     fun getByOwnerId(id: Long): Restaurant? {
         var restaurant = restaurantRepo.findByOwnerId(id)
         return restaurant
-    }
-
-    fun getMealsByRestaurant(id: Long) : List<Meal> {
-        var meals = mealsRepo.findByRestaurantId(id).toList()
-        return meals
     }
 
     fun registerRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
