@@ -11,13 +11,4 @@ data class Promotion(
 
     @ManyToOne(fetch = FetchType.EAGER)
     var meal: Meal,
-
-    @Column(nullable = false)
-    var type: PromotionTypes = PromotionTypes.PERCENT,
-
-    @Column(nullable = false)
-    var promotionPercent: Int = 0,
-
-    @Column(nullable = false)
-    var additionalMealsCount: Int = 0,
 )

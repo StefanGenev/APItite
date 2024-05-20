@@ -1,5 +1,6 @@
 package com.example.APItite.Model
 
+import com.example.APItite.Dto.SaveMealRequestDto
 import jakarta.persistence.*
 
 @Entity
@@ -23,4 +24,19 @@ data class Meal(
 
     @ManyToOne(fetch = FetchType.EAGER)
     var restaurant: Restaurant,
+
+    @Column(nullable = false)
+    var hasPromotion: Boolean = false,
+
+    @Column(nullable = false)
+    var promotionType: PromotionTypes = PromotionTypes.PERCENT,
+
+    @Column(nullable = false)
+    var promotionPercent: Int = 0,
+
+    @Column(nullable = false)
+    var additionalMealsCount: Int = 0,
+
+    @Column(nullable = false)
+    var isHidden: Boolean = false,
 )

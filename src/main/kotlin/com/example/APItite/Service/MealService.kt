@@ -1,10 +1,10 @@
 package com.example.APItite.Service
 
 
+import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.NoData
 import com.example.APItite.Dto.SaveMealRequestDto
 import com.example.APItite.Dto.SaveMealResponseDto
-import com.example.APItite.Dto.SavePromotionRequestDto
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Meal
 import com.example.APItite.Model.Promotion
@@ -32,43 +32,24 @@ class MealService (
         }
 
         val meal = Meal( id = dto.id
-                        , name = dto.name
-                        , description = dto.description
-                        , price = dto.price
-                        , imageUrl = dto.imageUrl
-                        , restaurant = restaurant)
+                , name = dto.name
+                , description = dto.description
+                , price = dto.price
+                , imageUrl = dto.imageUrl
+                , restaurant = restaurant
+                , hasPromotion = dto.hasPromotion
+                , promotionType = dto.promotionType
+                , promotionPercent = dto.promotionPercent
+                , additionalMealsCount = dto.additionalMealsCount
+                , isHidden = dto.isHidden)
 
         var savedMeal = mealRepo.save(meal)
         return SaveMealResponseDto(meal = savedMeal)
     }
 
-    fun savePromotion(dto: SavePromotionRequestDto): NoData {
+    fun deleteMeal(dto: IdentifierDto) : NoData {
 
-        var promotion: Promotion?
-
-        if (dto.id > 0) {
-
-            promotion = promotionRepo.findById(dto.id).get()
-            promotion.promotionPercent = dto.promotionPercent
-
-        } else {
-
-            val meal = mealRepo.findById(dto.mealId)
-
-            if (meal.isEmpty) {
-                throw ApiException(400, "Meal doesn't exist")
-            }
-
-            promotion = Promotion(meal = meal.get(), promotionPercent = dto.promotionPercent)
-        }
-
-        promotionRepo.save(promotion)
-
+        mealRepo.deleteById(dto.id)
         return NoData()
-    }
-
-    fun getPromotions(id: Long): List<Promotion> {
-        var promotions = promotionRepo.findByMealRestaurantId(id)
-        return promotions
     }
 }

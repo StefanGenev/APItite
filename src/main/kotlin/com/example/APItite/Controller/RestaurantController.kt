@@ -20,7 +20,7 @@ class RestaurantController(
     @GetMapping("/get-all")
     fun getAll(): ResponseEntity<Any> {
         try {
-            val result: List<Restaurant> = restaurantService.getAll()
+            val result = restaurantService.getAll()
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
@@ -31,7 +31,7 @@ class RestaurantController(
     @PostMapping("/get_by_owner_id")
     fun getByOwnerId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
-            val result: Restaurant? = restaurantService.getByOwnerId(dto.id)
+            val result = restaurantService.getByOwnerId(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {

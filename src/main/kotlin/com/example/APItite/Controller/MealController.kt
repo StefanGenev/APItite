@@ -24,7 +24,7 @@ class MealController(
     @PostMapping("/get_meals")
     fun getMeals(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
-            val result: List<Meal> = mealService.getMealsByRestaurant(dto.id)
+            val result = mealService.getMealsByRestaurant(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
@@ -35,7 +35,7 @@ class MealController(
     @PostMapping("/save_meal")
     fun saveMeal(@RequestBody dto: SaveMealRequestDto): ResponseEntity<Any> {
         try {
-            val result: SaveMealResponseDto = mealService.saveMeal(dto)
+            val result = mealService.saveMeal(dto)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
@@ -43,21 +43,10 @@ class MealController(
         }
     }
 
-    @PostMapping("/save_promotion")
-    fun savePromotion(@RequestBody dto: SavePromotionRequestDto): ResponseEntity<Any> {
+    @DeleteMapping("/delete_meal")
+    fun deleteMeal(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
-            val result = mealService.savePromotion(dto)
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
-
-        } catch (e: Exception) {
-            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
-        }
-    }
-
-    @PostMapping("/get_promotions")
-    fun getPromotions(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
-        try {
-            val result: List<Promotion> = mealService.getPromotions(dto.id)
+            val result = mealService.deleteMeal(dto)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
