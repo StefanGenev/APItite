@@ -39,6 +39,17 @@ class RestaurantController(
         }
     }
 
+    @PostMapping("/get_by_id")
+    fun getById(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result = restaurantService.findById(dto.id)
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
     @PostMapping("/register")
     fun register(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
         try {
