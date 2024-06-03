@@ -69,7 +69,7 @@ class UserService (
             role = payload.role
         )
 
-        val savedUser = save(user)
+        save(user)
 
         val refreshToken: RefreshToken = refreshTokenService.createRefreshToken(payload.email)
 

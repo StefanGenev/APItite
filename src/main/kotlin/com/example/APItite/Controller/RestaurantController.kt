@@ -85,4 +85,16 @@ class RestaurantController(
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
         }
     }
+
+    @PostMapping("/addRemoveFavoriteRestaurant")
+    fun refreshToken(@RequestBody dto: AddRemoveFavoriteRestaurantRequestDto): ResponseEntity<Any> {
+        try {
+
+            val result = restaurantService.addRemoveFavoriteRestaurant(dto)
+            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
 }

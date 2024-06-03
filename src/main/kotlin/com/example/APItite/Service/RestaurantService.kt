@@ -98,4 +98,25 @@ class RestaurantService (
     fun findById(id: Long): Restaurant? {
         return restaurantRepo.findByIdOrNull(id)
     }
+
+    fun addRemoveFavoriteRestaurant(dto: AddRemoveFavoriteRestaurantRequestDto): List<Restaurant> {
+
+        var user = userService.findById(dto.userId) ?: throw ApiException(400, "User doesn't exist")
+
+        if (dto.removeFromFavorites) {
+
+            user.favoriteRestaurants = user.favoriteRestaurants.filter { restaurant -> restaurant.id != dto.restaurantId  }
+
+        } else {
+
+            val restaurant = findById(dto.restaurantId) ?: throw ApiException(400, "Restaurant doesn't exist")
+
+            if ( !user.favoriteRestaurants.any { it.id == dto.restaurantId })
+                user.favoriteRestaurants.addLast(restaurant)
+        }
+
+        userService.save(user)
+
+        return user.favoriteRestaurants
+    }
 }

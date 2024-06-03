@@ -16,7 +16,10 @@ open class User(
         open var passWord: String = "",
 
         @Column(nullable = false)
-        open var role: Roles = Roles.CUSTOMER
+        open var role: Roles = Roles.CUSTOMER,
+
+        @ManyToMany(fetch = FetchType.EAGER)
+        var favoriteRestaurants: List<Restaurant> = mutableListOf()
 ) {
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         open var id: Long = 0
