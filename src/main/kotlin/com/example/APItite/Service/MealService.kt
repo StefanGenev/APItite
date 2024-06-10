@@ -7,16 +7,13 @@ import com.example.APItite.Dto.SaveMealRequestDto
 import com.example.APItite.Dto.SaveMealResponseDto
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Meal
-import com.example.APItite.Model.Promotion
 import com.example.APItite.Repo.MealRepository
-import com.example.APItite.Repo.PromotionsRepository
 import org.springframework.stereotype.Service
 
 @Service
 class MealService (
     private val mealRepo: MealRepository,
     private val restaurantService: RestaurantService,
-    private val promotionRepo: PromotionsRepository,
     ) {
     fun getMealsByRestaurant(id: Long) : List<Meal> {
         var meals = mealRepo.findByRestaurantId(id).toList()
@@ -40,7 +37,6 @@ class MealService (
                 , hasPromotion = dto.hasPromotion
                 , promotionType = dto.promotionType
                 , promotionPercent = dto.promotionPercent
-                , additionalMealsCount = dto.additionalMealsCount
                 , isHidden = dto.isHidden)
 
         var savedMeal = mealRepo.save(meal)

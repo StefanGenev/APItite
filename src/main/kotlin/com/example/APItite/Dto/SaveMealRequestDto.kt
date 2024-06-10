@@ -12,7 +12,6 @@ data class SaveMealRequestDto(
     var restaurantId: Long = 0,
     var hasPromotion: Boolean = false,
     var promotionType: PromotionTypes = PromotionTypes.PERCENT,
-    var additionalMealsCount: Int = 0,
     var promotionPercent: Int = 0,
     var isHidden: Boolean = false,
     )

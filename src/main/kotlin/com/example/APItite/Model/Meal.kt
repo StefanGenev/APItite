@@ -35,8 +35,5 @@ data class Meal(
     var promotionPercent: Int = 0,
 
     @Column(nullable = false)
-    var additionalMealsCount: Int = 0,
-
-    @Column(nullable = false)
     var isHidden: Boolean = false,
 )
