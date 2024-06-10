@@ -23,7 +23,7 @@ data class Meal(
     var imageUrl: String = "",
 
     @ManyToOne(fetch = FetchType.EAGER)
-    var restaurant: Restaurant,
+    var restaurant: Restaurant = Restaurant(),
 
     @Column(nullable = false)
     var hasPromotion: Boolean = false,

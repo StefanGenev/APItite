@@ -1,7 +1,6 @@
 package com.example.APItite.Model
 
 import jakarta.persistence.*
-import java.sql.Blob
 
 
 enum class PriceRanges {
@@ -17,7 +16,7 @@ data class Restaurant(
         var name: String = "",
 
         @ManyToOne(fetch = FetchType.EAGER)
-        var owner: User,
+        var owner: User = User(),
 
         @Enumerated(EnumType.STRING)
         var priceRange: PriceRanges = PriceRanges.CHEAP,
@@ -29,7 +28,7 @@ data class Restaurant(
         var imageUrl: String = "",
 
         @ManyToOne(fetch = FetchType.EAGER)
-        var foodType: FoodType,
+        var foodType: FoodType = FoodType(),
 
         var rating: Double = 0.0
 )
