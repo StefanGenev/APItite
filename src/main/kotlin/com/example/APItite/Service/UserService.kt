@@ -97,4 +97,8 @@ class UserService (
     fun save(user: User): User {
         return userRepo.save(user)
     }
+
+    fun getAll(): List<User> {
+        return userRepo.findAll().toList()
+    }
 }

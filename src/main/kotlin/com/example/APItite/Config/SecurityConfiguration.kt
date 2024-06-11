@@ -1,17 +1,14 @@
 package com.example.APItite.Config
 
+import com.example.APItite.Model.Roles
 import com.example.APItite.Service.CustomUserDetailsService
-import com.nimbusds.jose.jwk.source.ImmutableSecret
-import com.nimbusds.jose.proc.SecurityContext
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
-import org.springframework.security.config.Customizer
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
@@ -85,6 +82,7 @@ class SecurityConfiguration(
 
     @Bean
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
+
         // Define public and private routes
         http.authorizeHttpRequests { authorizeHttpRequests ->
             authorizeHttpRequests
@@ -92,6 +90,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/refreshToken").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/checkIfEmailExists").permitAll()
+                    .requestMatchers(HttpMethod.POST, "/api/users").hasRole(Roles.ADMIN.toString())
                     .requestMatchers("/api/**").authenticated()
                     .anyRequest().permitAll()
         }.authenticationProvider(authenticationProvider())

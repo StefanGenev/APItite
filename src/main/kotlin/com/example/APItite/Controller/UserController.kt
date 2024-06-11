@@ -7,10 +7,7 @@ import com.example.APItite.Service.UserService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 
 @RestController
@@ -70,6 +67,17 @@ class UserController(
                                         token = refreshTokenRequestDTO.token)
 
             return ResponseHandler.generateResponse("RefreshToken sent!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @GetMapping("/users/get-all")
+    fun getAll(): ResponseEntity<Any> {
+        try {
+            val result = userService.getAll()
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)

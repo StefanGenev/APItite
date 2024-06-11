@@ -39,4 +39,5 @@ open class CustomUserDetails(user: User) : User(user), UserDetails {
     override fun isEnabled(): Boolean {
         return true
     }
+
 }
