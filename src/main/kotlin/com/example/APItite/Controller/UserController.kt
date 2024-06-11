@@ -1,6 +1,7 @@
 package com.example.APItite.Controller
 
 import com.example.APItite.Dto.*
+import com.example.APItite.Model.Roles
 import com.example.APItite.Service.RefreshTokenService
 import com.example.APItite.Service.TokenService
 import com.example.APItite.Service.UserService
@@ -76,7 +77,10 @@ class UserController(
     @GetMapping("/users/get-all")
     fun getAll(): ResponseEntity<Any> {
         try {
-            val result = userService.getAll()
+
+            var result = userService.getAll()
+            result = result.filter { item -> item.role != Roles.ADMIN }
+
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
