@@ -1,5 +1,6 @@
 package com.example.APItite.Model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 
@@ -15,7 +16,8 @@ data class Restaurant(
         @Column(nullable = false)
         var name: String = "",
 
-        @ManyToOne(fetch = FetchType.EAGER)
+        @ManyToOne(fetch = FetchType.LAZY)
+        @JsonIgnore
         var owner: User = User(),
 
         @Enumerated(EnumType.STRING)

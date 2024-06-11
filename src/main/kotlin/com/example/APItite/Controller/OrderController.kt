@@ -1,5 +1,6 @@
 package com.example.APItite.Controller
 
+import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Model.Order
 import com.example.APItite.Service.OrderService
 import com.example.APItite.Utils.ResponseHandler
@@ -20,6 +21,17 @@ class OrderController(
         try {
             val result = orderService.confirmOrder(dto)
             return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/get_by_user")
+    fun getByUserId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result = orderService.getByUserId(dto)
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)

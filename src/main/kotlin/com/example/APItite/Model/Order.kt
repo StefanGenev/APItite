@@ -1,6 +1,11 @@
 package com.example.APItite.Model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import jakarta.persistence.*
+import java.time.LocalDateTime
 
 enum class OrderStatuses {
 
@@ -17,7 +22,7 @@ enum class PaymentMethods {
 
 @Entity
 @Table(name = "orders")
-data class Order(
+data class Order (
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
@@ -37,7 +42,21 @@ data class Order(
     @Column(nullable = false)
     var cardNumber: String = "",
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy="order")
+    @Column(nullable = false)
+    var address: String = "",
+
+    @OneToMany(fetch = FetchType.EAGER,
+                mappedBy="order")
     var orderItems: MutableList<OrderItem> = mutableListOf(),
 
-    )
+    @Column(nullable = false)
+    var orderedOn: LocalDateTime = LocalDateTime.now(),
+
+    @Column(nullable = false)
+    var deliveredOn: LocalDateTime = LocalDateTime.now(),
+
+    ) {
+    override fun toString(): String {
+        return ""
+    }
+}
