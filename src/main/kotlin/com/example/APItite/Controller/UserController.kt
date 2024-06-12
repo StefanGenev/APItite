@@ -8,6 +8,7 @@ import com.example.APItite.Service.UserService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
 
@@ -74,6 +75,7 @@ class UserController(
         }
     }
 
+    @Secured("ADMIN")
     @GetMapping("/users/get-all")
     fun getAll(): ResponseEntity<Any> {
         try {

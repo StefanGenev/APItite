@@ -3,6 +3,7 @@ package com.example.APItite.Service
 import com.example.APItite.Dto.*
 import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.RefreshToken
+import com.example.APItite.Model.RestaurantStatuses
 import com.example.APItite.Model.User
 import com.example.APItite.Repo.UserRepository
 import org.springframework.data.repository.findByIdOrNull
@@ -34,6 +35,7 @@ class UserService (
         if (authentication.isAuthenticated()) {
 
             val user = findByEmail(payload.email) ?: throw ApiException(400, "Login failed")
+            user.favoriteRestaurants= user.favoriteRestaurants.filter { it -> it.status == RestaurantStatuses.APPROVED }
 
             val refreshToken: RefreshToken = refreshTokenService.createRefreshToken(payload.email)
 

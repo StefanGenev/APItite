@@ -1,5 +1,6 @@
 package com.example.APItite.Model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 

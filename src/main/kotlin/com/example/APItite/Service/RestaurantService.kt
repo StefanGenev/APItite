@@ -81,6 +81,23 @@ class RestaurantService (
         return savedRestaurant
     }
 
+    fun changeStatus(dto: ChangeRestaurantStatusRequestDto): NoData {
+
+        val restaurant = restaurantRepo.findById(dto.restaurantId)
+
+        if (restaurant.isEmpty) {
+            throw ApiException(400, "Restaurant doesn't exist")
+        }
+
+        val newRestaurant = restaurant.get()
+        newRestaurant.status = dto.status
+        newRestaurant.statusNote = dto.note
+
+        val savedRestaurant = restaurantRepo.save(newRestaurant)
+
+        return NoData()
+    }
+
     fun saveRestaurantLocation(dto: SaveRestaurantLocationRequestDto): NoData {
 
         val restaurantOptional = restaurantRepo.findById(dto.restaurantId)
@@ -118,5 +135,11 @@ class RestaurantService (
         userService.save(user)
 
         return user.favoriteRestaurants
+    }
+
+    fun delete(id: Long): NoData {
+
+        restaurantRepo.deleteById(id)
+        return NoData()
     }
 }

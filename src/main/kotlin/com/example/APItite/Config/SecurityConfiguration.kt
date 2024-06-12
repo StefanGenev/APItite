@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -29,6 +30,7 @@ import javax.crypto.spec.SecretKeySpec
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true)
 class SecurityConfiguration(
     private val userDetailsService: CustomUserDetailsService,
     private val jwtAuthFilter: JwtAuthFilter,
@@ -90,9 +92,7 @@ class SecurityConfiguration(
                     .requestMatchers(HttpMethod.POST, "/api/register").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/refreshToken").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/checkIfEmailExists").permitAll()
-                    .requestMatchers(HttpMethod.POST, "/api/users").hasRole(Roles.ADMIN.toString())
                     .requestMatchers("/api/**").authenticated()
-                    .anyRequest().permitAll()
         }.authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter::class.java)
 

@@ -6,6 +6,7 @@ import com.example.APItite.Service.OrderService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
 
 
@@ -15,7 +16,7 @@ class OrderController(
     private val orderService: OrderService,
 ) {
 
-
+    @Secured("CUSTOMER", "ADMIN")
     @PostMapping("/confirm")
     fun confirmOrder(@RequestBody dto: Order): ResponseEntity<Any> {
         try {

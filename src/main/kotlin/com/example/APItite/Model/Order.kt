@@ -45,8 +45,7 @@ data class Order (
     @Column(nullable = false)
     var address: String = "",
 
-    @OneToMany(fetch = FetchType.EAGER,
-                mappedBy="order")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy="order", cascade = [CascadeType.ALL])
     var orderItems: MutableList<OrderItem> = mutableListOf(),
 
     @Column(nullable = false)
