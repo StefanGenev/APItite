@@ -13,6 +13,7 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 
 @Service
@@ -102,5 +103,13 @@ class UserService (
 
     fun getAll(): List<User> {
         return userRepo.findAll().toList()
+    }
+    @Transactional
+    fun delete(id: Long): NoData {
+
+        refreshTokenService.deleteByUserId(id)
+        userRepo.deleteById(id)
+
+        return NoData()
     }
 }

@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository
 interface RefreshTokenRepository: CrudRepository<RefreshToken, Int> {
     fun findByToken(token: String): RefreshToken?
     fun findByUserId(id: Long): RefreshToken?
+
+    fun deleteByUserId(id: Long)
 }

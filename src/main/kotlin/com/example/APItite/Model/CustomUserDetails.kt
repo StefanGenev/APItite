@@ -4,8 +4,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
-import java.util.*
-import java.util.stream.Collectors
 
 
 open class CustomUserDetails(user: User) : User(user), UserDetails {

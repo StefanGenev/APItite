@@ -76,14 +76,26 @@ class UserController(
     }
 
     @Secured("ADMIN")
-    @GetMapping("/users/get-all")
-    fun getAll(): ResponseEntity<Any> {
+    @GetMapping("/users/get_customers")
+    fun getCustomers(): ResponseEntity<Any> {
         try {
 
             var result = userService.getAll()
-            result = result.filter { item -> item.role != Roles.ADMIN }
+            result = result.filter { item -> item.role == Roles.CUSTOMER }
 
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @Secured("ADMIN")
+    @DeleteMapping("/users/delete")
+    fun delete(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result = userService.delete(dto.id)
+            return ResponseHandler.generateResponse("Successfully deleted data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)

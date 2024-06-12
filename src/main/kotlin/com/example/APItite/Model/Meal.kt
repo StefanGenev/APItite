@@ -1,6 +1,5 @@
 package com.example.APItite.Model
 
-import com.example.APItite.Dto.SaveMealRequestDto
 import jakarta.persistence.*
 
 @Entity

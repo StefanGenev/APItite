@@ -6,6 +6,7 @@ import java.time.Instant
 @Entity
 @Table(name = "REFRESH_TOKENS")
 data class RefreshToken (
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
@@ -15,5 +16,5 @@ data class RefreshToken (
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    var user: User
+    var user: User = User()
 )

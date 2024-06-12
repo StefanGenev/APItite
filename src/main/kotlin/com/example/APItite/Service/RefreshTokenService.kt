@@ -52,4 +52,8 @@ class RefreshTokenService(
         }
         return token
     }
+
+    fun deleteByUserId(id: Long) {
+        refreshTokenRepository.deleteByUserId(id)
+    }
 }

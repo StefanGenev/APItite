@@ -3,7 +3,6 @@ package com.example.APItite.Model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
-
 @Entity
 @Table(name = "users")
 open class User(
@@ -20,9 +19,11 @@ open class User(
         open var role: Roles = Roles.CUSTOMER,
 
         @ManyToMany(fetch = FetchType.EAGER)
-        var favoriteRestaurants: List<Restaurant> = mutableListOf()
+        open var favoriteRestaurants: List<Restaurant> = mutableListOf(),
+
 ) {
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         open var id: Long = 0
 
         constructor(user: User) : this(user.name, user.email, user.passWord) {
