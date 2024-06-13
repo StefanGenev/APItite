@@ -39,10 +39,9 @@ data class Order (
     @Column(nullable = false)
     var paymentMethod: PaymentMethods = PaymentMethods.CASH,
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     var cardNumber: String = "",
 
-    @Column(nullable = false)
     var address: String = "",
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy="order", cascade = [CascadeType.ALL])

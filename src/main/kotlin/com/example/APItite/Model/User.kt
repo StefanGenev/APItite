@@ -1,18 +1,18 @@
 package com.example.APItite.Model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
 @Table(name = "users")
 open class User(
-        @Column(nullable = false)
+
+        @Column(nullable = false, length = 32)
         open var name: String = "",
 
-        @Column(nullable = false, unique = true)
+        @Column(nullable = false, unique = true, length = 64)
         open var email: String = "",
 
-        @Column(nullable = false)
+        @Column(nullable = false, length = 32)
         open var passWord: String = "",
 
         @Column(nullable = false)
