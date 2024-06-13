@@ -1,20 +1,12 @@
 package com.example.APItite.Controller
 
 import com.example.APItite.Dto.*
-import com.example.APItite.Model.Meal
-import com.example.APItite.Model.Promotion
-import com.example.APItite.Model.Restaurant
-import com.example.APItite.Model.Roles
 import com.example.APItite.Service.MealService
-import com.example.APItite.Service.RestaurantService
 import com.example.APItite.Utils.ResponseHandler
 import org.springframework.http.HttpStatus
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.multipart.MultipartFile
-import java.util.*
 
 
 @RestController
