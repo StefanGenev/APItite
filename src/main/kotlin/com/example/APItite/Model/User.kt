@@ -9,7 +9,7 @@ open class User(
         @Column(nullable = false, length = 32)
         open var name: String = "",
 
-        @Column(nullable = false, unique = true, length = 64)
+        @Column(nullable = false, unique = true, length = 32)
         open var email: String = "",
 
         @Column(nullable = false, length = 32)

@@ -9,7 +9,7 @@ data class Meal(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
-    @Column(nullable = false, length = 128)
+    @Column(nullable = false, length = 64)
     var name: String = "",
 
     @Column(nullable = false)

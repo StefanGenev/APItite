@@ -3,6 +3,7 @@ package com.example.APItite.Service
 import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.NoData
 import com.example.APItite.Model.Order
+import com.example.APItite.Model.OrderItem
 import com.example.APItite.Model.OrderStatuses
 import com.example.APItite.Repo.OrderItemRepository
 import com.example.APItite.Repo.OrderRepository
@@ -17,12 +18,17 @@ class OrderService (
 ) {
 
     fun confirmOrder(dto: Order) : NoData {
+
         dto.status = OrderStatuses.ORDERED
         dto.orderedOn = LocalDateTime.now()
 
-        var savedOrder = orderRepository.save(dto)
+        var newOrderItems: MutableList<OrderItem> = dto.orderItems.map { it }.toMutableList()
+        dto.orderItems.clear()
 
-        for (orderItem in dto.orderItems) {
+        var savedOrder = orderRepository.save(dto)
+        savedOrder.orderItems = newOrderItems
+
+        for (orderItem in savedOrder.orderItems) {
             orderItem.order = savedOrder
         }
 
