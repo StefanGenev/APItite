@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*
 class FoodTypeController(
     private val foodTypeService: FoodTypeService,
 ) {
-    @Secured("RESTAURANT", "ADMIN")
     @GetMapping("/get-all")
     fun getAll(): ResponseEntity<Any> {
         try {

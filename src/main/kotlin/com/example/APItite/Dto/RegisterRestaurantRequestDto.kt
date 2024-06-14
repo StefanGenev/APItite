@@ -12,6 +12,8 @@ data class RegisterRestaurantRequestDto(
 
     var address: String = "",
 
+    var phoneNumber: String = "",
+
     var imageUrl: String = "",
 
     var rating: Double = 0.0,

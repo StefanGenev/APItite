@@ -45,7 +45,7 @@ class RestaurantService (
             , address = dto.address
             , imageUrl = dto.imageUrl
             , foodType = foodType
-            , 0.0 )
+            , phoneNumber = dto.phoneNumber )
 
         val savedRestaurant = restaurantRepo.save(restaurant)
 

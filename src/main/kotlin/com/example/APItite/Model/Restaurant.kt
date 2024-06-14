@@ -38,7 +38,8 @@ data class Restaurant(
         @ManyToOne(fetch = FetchType.EAGER)
         var foodType: FoodType = FoodType(),
 
-        var rating: Double = 0.0,
+        @Column(nullable = false, length = 16)
+        var phoneNumber: String = "",
 
         @Column(nullable = false)
         var status: RestaurantStatuses = RestaurantStatuses.REGISTERED,
