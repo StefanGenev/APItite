@@ -1,5 +1,6 @@
 package com.example.APItite.Model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -21,6 +22,10 @@ open class User(
         @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
         @JoinTable(name = "favorite_restaurants", joinColumns = [JoinColumn(name = "restaurant_id")])
         open var favoriteRestaurants: List<Restaurant> = mutableListOf(),
+
+        @OneToMany(fetch = FetchType.LAZY, mappedBy="user", cascade = [CascadeType.ALL])
+        @JsonIgnore
+        var reviews: MutableList<Review> = mutableListOf(),
 
 ) {
         @Id
