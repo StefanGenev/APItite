@@ -28,10 +28,23 @@ class OrderController(
         }
     }
 
+    @Secured("CUSTOMER", "ADMIN")
     @PostMapping("/get_by_user")
     fun getByUserId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
             val result = orderService.getByUserId(dto)
+            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @Secured("RESTAURANT", "ADMIN")
+    @PostMapping("/get_by_restaurant")
+    fun getByRestaurantId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
+        try {
+            val result = orderService.getByRestaurantId(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {

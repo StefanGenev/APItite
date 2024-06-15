@@ -36,8 +36,12 @@ class RestaurantService (
 
         val reviews = reviewsService.findByRestaurantId(restaurant.id)
 
-        val totalRating = reviews.sumOf { it.rating }
-        val averageRating = (totalRating / reviews.size).toDouble()
+        var averageRating = 0.0
+
+        if (reviews.isNotEmpty()) {
+            val totalRating = reviews.sumOf { it.rating }
+            averageRating = (totalRating / reviews.size).toDouble()
+        }
 
         val orders = orderService.getByRestaurantId(restaurant.id)
 

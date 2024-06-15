@@ -5,7 +5,6 @@ import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Dto.NoData
 import com.example.APItite.Dto.SaveMealRequestDto
 import com.example.APItite.Dto.SaveMealResponseDto
-import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Meal
 import com.example.APItite.Repo.MealRepository
 import org.springframework.stereotype.Service
