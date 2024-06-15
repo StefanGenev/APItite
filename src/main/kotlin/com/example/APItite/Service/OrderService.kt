@@ -43,4 +43,10 @@ class OrderService (
         return result
     }
 
+    fun getByRestaurantId(id: Long) : List<Order> {
+
+        val result = orderRepository.findByRestaurantId(id)
+        return result
+    }
+
 }

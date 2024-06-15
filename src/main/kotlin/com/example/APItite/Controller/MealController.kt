@@ -42,6 +42,7 @@ class MealController(
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
         }
     }
+
     @Secured("RESTAURANT")
     @PostMapping("/save_meal")
     fun saveMeal(@RequestBody dto: SaveMealRequestDto): ResponseEntity<Any> {

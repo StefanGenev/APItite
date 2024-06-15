@@ -22,18 +22,14 @@ class MealService (
 
     fun saveMeal(dto: SaveMealRequestDto) : SaveMealResponseDto {
 
-        val restaurant = restaurantService.findById(dto.restaurantId)
-
-        if (restaurant == null) {
-            throw ApiException(400, "Restaurant doesn't exist")
-        }
+        val restaurantDetails = restaurantService.findById(dto.restaurantId)
 
         val meal = Meal( id = dto.id
                 , name = dto.name
                 , description = dto.description
                 , price = dto.price
                 , imageUrl = dto.imageUrl
-                , restaurant = restaurant
+                , restaurant = restaurantDetails.restaurant
                 , hasPromotion = dto.hasPromotion
                 , promotionType = dto.promotionType
                 , promotionPercent = dto.promotionPercent

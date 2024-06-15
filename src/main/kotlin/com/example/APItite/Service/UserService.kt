@@ -36,7 +36,7 @@ class UserService (
         if (authentication.isAuthenticated()) {
 
             val user = findByEmail(payload.email) ?: throw ApiException(400, "Login failed")
-            user.favoriteRestaurants= user.favoriteRestaurants.filter { it -> it.status == RestaurantStatuses.APPROVED }
+            user.favoriteRestaurants = user.favoriteRestaurants.filter { it -> it.status == RestaurantStatuses.APPROVED }
 
             val refreshToken: RefreshToken = refreshTokenService.createRefreshToken(payload.email)
 

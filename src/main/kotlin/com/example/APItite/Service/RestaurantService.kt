@@ -13,15 +13,35 @@ class RestaurantService (
         private val restaurantRepo: RestaurantRepository,
         private val userService: UserService,
         private val foodTypeService: FoodTypeService,
+        private val reviewsService: ReviewsService,
+        private val orderService: OrderService,
 ) {
     fun getAll(): List<Restaurant> {
         var restaurants = restaurantRepo.findAll().toList()
         return restaurants
     }
 
-    fun getByOwnerId(id: Long): Restaurant? {
-        var restaurant = restaurantRepo.findByOwnerId(id)
-        return restaurant
+    fun getByOwnerId(id: Long): RestaurantDetailsResponseDto {
+
+        val restaurant = restaurantRepo.findByOwnerId(id)
+
+        if (restaurant == null) {
+            throw ApiException(400, "Restaurant doesn't exist")
+        }
+
+        return getRestaurantDetails(restaurant)
+    }
+
+    fun getRestaurantDetails(restaurant: Restaurant): RestaurantDetailsResponseDto {
+
+        val reviews = reviewsService.findByRestaurantId(restaurant.id)
+
+        val totalRating = reviews.sumOf { it.rating }
+        val averageRating = (totalRating / reviews.size).toDouble()
+
+        val orders = orderService.getByRestaurantId(restaurant.id)
+
+        return RestaurantDetailsResponseDto(restaurant = restaurant, averageRating = averageRating, totalOrders = orders.size )
     }
 
     fun registerRestaurant(dto: RegisterRestaurantRequestDto): RegisterRestaurantResponseDto {
@@ -109,8 +129,15 @@ class RestaurantService (
         restaurantRepo.save(restaurant)
         return NoData()
     }
-    fun findById(id: Long): Restaurant? {
-        return restaurantRepo.findByIdOrNull(id)
+    fun findById(id: Long): RestaurantDetailsResponseDto {
+
+        val restaurant = restaurantRepo.findByIdOrNull(id)
+
+        if (restaurant == null) {
+            throw ApiException(400, "Restaurant doesn't exist")
+        }
+
+        return getRestaurantDetails(restaurant)
     }
 
     fun addRemoveFavoriteRestaurant(dto: AddRemoveFavoriteRestaurantRequestDto): List<Restaurant> {
@@ -123,10 +150,10 @@ class RestaurantService (
 
         } else {
 
-            val restaurant = findById(dto.restaurantId) ?: throw ApiException(400, "Restaurant doesn't exist")
+            val restaurantDetails = findById(dto.restaurantId) ?: throw ApiException(400, "Restaurant doesn't exist")
 
             if ( !user.favoriteRestaurants.any { it.id == dto.restaurantId })
-                user.favoriteRestaurants.addLast(restaurant)
+                user.favoriteRestaurants.addLast(restaurantDetails.restaurant)
         }
 
         userService.save(user)

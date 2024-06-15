@@ -54,5 +54,4 @@ data class Restaurant(
         @OneToMany(fetch = FetchType.LAZY, mappedBy="restaurant", cascade = [CascadeType.ALL])
         @JsonIgnore
         var meals: MutableList<Meal> = mutableListOf(),
-
         )

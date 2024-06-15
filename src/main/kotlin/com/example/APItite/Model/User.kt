@@ -18,7 +18,8 @@ open class User(
         @Column(nullable = false)
         open var role: Roles = Roles.CUSTOMER,
 
-        @ManyToMany(fetch = FetchType.EAGER)
+        @ManyToMany(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+        @JoinTable(name = "favorite_restaurants", joinColumns = [JoinColumn(name = "restaurant_id")])
         open var favoriteRestaurants: List<Restaurant> = mutableListOf(),
 
 ) {
