@@ -1,5 +1,6 @@
 package com.example.APItite.Controller
 
+import com.example.APItite.Dto.ConfirmOrderRequestDto
 import com.example.APItite.Dto.IdentifierDto
 import com.example.APItite.Model.Order
 import com.example.APItite.Service.OrderService
@@ -18,7 +19,7 @@ class OrderController(
 
     @Secured("CUSTOMER", "ADMIN")
     @PostMapping("/confirm")
-    fun confirmOrder(@RequestBody dto: Order): ResponseEntity<Any> {
+    fun confirmOrder(@RequestBody dto: ConfirmOrderRequestDto): ResponseEntity<Any> {
         try {
             val result = orderService.confirmOrder(dto)
             return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)

@@ -44,6 +44,9 @@ data class Order (
 
     var address: String = "",
 
+    @Column(nullable = false)
+    var deliveryPrice: Double = 0.0,
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy="order", cascade = [CascadeType.ALL])
     var orderItems: MutableList<OrderItem> = mutableListOf(),
 

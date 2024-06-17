@@ -1,12 +1,12 @@
 package com.example.APItite.Service
 
+import com.example.APItite.Dto.ConfirmOrderRequestDto
+import com.example.APItite.Dto.ConfirmOrderResponseDto
 import com.example.APItite.Dto.IdentifierDto
-import com.example.APItite.Dto.NoData
+import com.example.APItite.Exceptions.ApiException
 import com.example.APItite.Model.Order
-import com.example.APItite.Model.OrderItem
 import com.example.APItite.Model.OrderStatuses
-import com.example.APItite.Repo.OrderItemRepository
-import com.example.APItite.Repo.OrderRepository
+import com.example.APItite.Repo.*
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -15,18 +15,37 @@ import java.time.LocalDateTime
 class OrderService (
     private val orderRepository: OrderRepository,
     private val orderItemRepository: OrderItemRepository,
+    private val restaurantRepo: RestaurantRepository,
+    private val usersRepo: UserRepository,
+    private val reviewsRepo: ReviewsRepository,
 ) {
 
-    fun confirmOrder(dto: Order) : NoData {
+    fun confirmOrder(dto: ConfirmOrderRequestDto) : ConfirmOrderResponseDto {
 
-        dto.status = OrderStatuses.ORDERED
-        dto.orderedOn = LocalDateTime.now()
+        val restaurant = restaurantRepo.findById(dto.restaurantId)
 
-        var newOrderItems: MutableList<OrderItem> = dto.orderItems.map { it }.toMutableList()
-        dto.orderItems.clear()
+        if (restaurant == null) {
+            throw ApiException(400, "Restaurant doesn't exist")
+        }
 
-        var savedOrder = orderRepository.save(dto)
-        savedOrder.orderItems = newOrderItems
+        val user = usersRepo.findById(dto.userId)
+
+        if (user == null) {
+            throw ApiException(400, "User doesn't exist")
+        }
+
+        val order = Order()
+        order.restaurant = restaurant.get()
+        order.user = user.get()
+        order.address = dto.address
+        order.cardNumber = dto.cardNumber
+        order.paymentMethod = dto.paymentMethod
+        order.status = OrderStatuses.ORDERED
+        order.orderedOn = LocalDateTime.now()
+        order.deliveryPrice = dto.deliveryPrice
+
+        var savedOrder = orderRepository.save(order)
+        savedOrder.orderItems = dto.orderItems
 
         for (orderItem in savedOrder.orderItems) {
             orderItem.order = savedOrder
@@ -34,7 +53,9 @@ class OrderService (
 
         orderItemRepository.saveAll(dto.orderItems)
 
-        return NoData()
+        val canWriteReviews = reviewsRepo.findByUserIdAndRestaurantId(userId = dto.userId, restaurantId = dto.restaurantId).isEmpty()
+
+        return ConfirmOrderResponseDto(canWriteReview = canWriteReviews)
     }
 
     fun getByUserId(dto: IdentifierDto) : List<Order> {
