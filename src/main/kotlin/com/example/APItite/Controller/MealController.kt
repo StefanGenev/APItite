@@ -60,7 +60,7 @@ class MealController(
     fun deleteMeal(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
             val result = mealService.deleteMeal(dto)
-            return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
+            return ResponseHandler.generateResponse("Successfully deleted data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)

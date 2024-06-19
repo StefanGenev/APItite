@@ -13,4 +13,7 @@ open class FoodType (
     @Column(nullable = false, length = 64)
     open var name: String = "",
 
+    @Column(nullable = false, length = 64)
+    open var nameEnglish: String = "",
+
 )
