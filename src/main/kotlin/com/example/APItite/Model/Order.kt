@@ -1,9 +1,5 @@
 package com.example.APItite.Model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
@@ -39,9 +35,7 @@ data class Order (
     @Column(nullable = false)
     var paymentMethod: PaymentMethods = PaymentMethods.CASH,
 
-    @Column(nullable = false, length = 32)
-    var cardNumber: String = "",
-
+    @Column(columnDefinition = "nvarchar(255)", nullable = false)
     var address: String = "",
 
     @Column(nullable = false)

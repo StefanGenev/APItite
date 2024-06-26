@@ -18,7 +18,7 @@ data class Review (
     @Column(nullable = false)
     var rating: Int = 0,
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "nvarchar(255)", nullable = false)
     var feedback: String = "",
 
     )

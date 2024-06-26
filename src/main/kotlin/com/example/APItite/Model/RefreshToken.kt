@@ -10,6 +10,7 @@ data class RefreshToken (
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
 
+    @Column(columnDefinition = "nvarchar(255)", nullable = false)
     var token: String = "",
 
     var expiryDate: Instant = Instant.now(),

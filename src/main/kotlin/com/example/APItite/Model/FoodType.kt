@@ -10,10 +10,10 @@ open class FoodType (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     open var id: Long = 0,
 
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, columnDefinition = "nvarchar(64)", length = 64)
     open var name: String = "",
 
-    @Column(nullable = false, length = 64)
+    @Column(nullable = false, columnDefinition = "nvarchar(64)", length = 64)
     open var nameEnglish: String = "",
 
 )

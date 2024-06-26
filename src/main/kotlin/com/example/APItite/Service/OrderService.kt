@@ -38,7 +38,7 @@ class OrderService (
         order.restaurant = restaurant.get()
         order.user = user.get()
         order.address = dto.address
-        order.cardNumber = dto.cardNumber
+        //TODO: order.cardNumber = dto.cardNumber
         order.paymentMethod = dto.paymentMethod
         order.status = OrderStatuses.ORDERED
         order.orderedOn = LocalDateTime.now()
