@@ -19,7 +19,7 @@ data class Restaurant(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var id: Long = 0,
 
-        @Column(columnDefinition = "nvarchar(64)", nullable = false, length = 64)
+        @Column(columnDefinition = "nvarchar(64)", nullable = false)
         var name: String = "",
 
         @OneToOne(fetch = FetchType.LAZY)

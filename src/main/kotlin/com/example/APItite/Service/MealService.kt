@@ -14,6 +14,7 @@ class MealService (
     private val mealRepo: MealRepository,
     private val restaurantService: RestaurantService,
     ) {
+
     fun getMealsByRestaurant(id: Long) : List<Meal> {
         var meals = mealRepo.findByRestaurantId(id).toList()
         return meals

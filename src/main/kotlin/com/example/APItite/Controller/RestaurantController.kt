@@ -41,6 +41,30 @@ class RestaurantController(
         }
     }
 
+    @Secured("CUSTOMER", "ADMIN")
+    @PostMapping("/addRemoveFavoriteRestaurant")
+    fun addRemoveFavorite(@RequestBody dto: AddRemoveFavoriteRestaurantRequestDto): ResponseEntity<Any> {
+        try {
+            val result = restaurantService.addRemoveFavoriteRestaurant(dto)
+            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
+    @PostMapping("/register")
+    fun register(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
+        try {
+
+            val result = restaurantService.registerRestaurant(dto)
+            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
+
+        } catch (e: Exception) {
+            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
+        }
+    }
+
     @PostMapping("/get_by_owner_id")
     fun getByOwnerId(@RequestBody dto: IdentifierDto): ResponseEntity<Any> {
         try {
@@ -57,18 +81,6 @@ class RestaurantController(
         try {
             val result = restaurantService.findById(dto.id)
             return ResponseHandler.generateResponse("Successfully retrieved data!", HttpStatus.OK, result)
-
-        } catch (e: Exception) {
-            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
-        }
-    }
-
-    @PostMapping("/register")
-    fun register(@RequestBody dto: RegisterRestaurantRequestDto): ResponseEntity<Any> {
-        try {
-
-            val result = restaurantService.registerRestaurant(dto)
-            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {
             return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
@@ -105,18 +117,6 @@ class RestaurantController(
         try {
 
             val result = restaurantService.saveRestaurantLocation(dto)
-            return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
-
-        } catch (e: Exception) {
-            return ResponseHandler.generateResponse(e.message!!, HttpStatus.MULTI_STATUS, null)
-        }
-    }
-
-    @Secured("CUSTOMER", "ADMIN")
-    @PostMapping("/addRemoveFavoriteRestaurant")
-    fun addRemoveFavorite(@RequestBody dto: AddRemoveFavoriteRestaurantRequestDto): ResponseEntity<Any> {
-        try {
-            val result = restaurantService.addRemoveFavoriteRestaurant(dto)
             return ResponseHandler.generateResponse("Successfully saved data!", HttpStatus.OK, result)
 
         } catch (e: Exception) {

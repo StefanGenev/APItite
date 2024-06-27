@@ -13,7 +13,7 @@ open class User(
         @Column(columnDefinition = "nvarchar(32)", nullable = false, unique = true, length = 32)
         open var email: String = "",
 
-        @Column(columnDefinition = "nvarchar(32)", nullable = false, length = 32)
+        @Column(columnDefinition = "nvarchar(255)", nullable = false)
         open var passWord: String = "",
 
         @Column(nullable = false)
